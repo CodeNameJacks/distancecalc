@@ -20,7 +20,7 @@ pids/
 *.pid.lock
 
 # Compiled output
-#dist/
+dist/
 build/
 lib/
 *.tsbuildinfo
