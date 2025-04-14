@@ -1,3 +1,4 @@
+<!-- scripts and functions -->
 <script>
 // @ts-nocheck
 
@@ -10,11 +11,8 @@
     
 
     const{VITE_BASE_URL} = import.meta.env
-
-    
-    
      
-      /**
+    /**
      * @type {any }
      */
      let data = [];
@@ -23,42 +21,36 @@
      
      let chunkedItems;
    
-    /**** functions and API calls ****/
-    
-    
+
+    /* function move from historical queries page to calculator page
+    * accepts no params
+    */
     function goToCalculator (){
         goto('/')
     }
 
-  
 
-    //get historical data 
+    /*get all historical data 
+    * accepts no params
+    */
     onMount(async () => {
-        
-       
         try {
             let response = await axios.get(VITE_BASE_URL + '/historical');
             // @ts-ignore
             let histData = response.data;
-            //d = JSON.stringify(histData[0].source_address)
-            alert((histData).length)
-            alert(JSON.stringify(histData[0]).length);
 
-           for( let i=0; i< histData.length; i++){
+            for( let i=0; i< histData.length; i++){
                  Object.entries(histData[i]).forEach(([key, value]) => {
                     if(`${key}` != "_id"){
 
                      data.push(`${value}`);
-                    }
-                
+                    }        
             });
         }
            
         let numOfRows = 4;
-            console.log("DATA");
-            console.log(JSON.stringify(data));
 
-          // Break flat array into chunks of 'columnsPerRow'
+        // Break flat array into chunks of 'columnsPerRow'
         // @ts-ignore
         function chunkArray(array, size) {
         const chunks = [];
@@ -68,21 +60,19 @@
             return chunks;
         }
 
-         chunkedItems = chunkArray(data, numOfRows);
+        chunkedItems = chunkArray(data, numOfRows);
 
-           // alert(data)
         }
         catch(err){
             console.log("Error getting historical quiereis: " + err);
         }
-        return      
-    
-    })
-
-    
+        return         
+    })  
    
 </script>
 
+
+<!-- html page layout-->
 <div class='headerWrapper'>    
     <Title/>
     <button on:click={goToCalculator} id="submit">{$LL.backToCalc()}<img src={calcImg} alt="calcImage" /></button>
@@ -101,8 +91,7 @@
             <th>{$LL.distKilo()}</th>
             </tr>
         </thead>
-        <tbody>
-            
+        <tbody> 
             {#each chunkedItems as row} 
             <tr>
                 {#each row as item}
@@ -110,14 +99,13 @@
                 {/each}
             </tr>
             {/each}
-            </tbody>
-      </table>
-   
+        </tbody>
+      </table>  
 </div>       
 
 
 
-
+<!-- style sheet -->
 <style>
     .headerWrapper{
         width: 1255px;
@@ -153,7 +141,7 @@
         margin-bottom: 32px;
         margin-right: auto;
         margin-left: auto;
-        margin-bottom: 32px;
+        padding-bottom: 32px;
 
     }
 
