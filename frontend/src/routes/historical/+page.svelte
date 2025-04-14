@@ -153,6 +153,7 @@
         margin-bottom: 32px;
         margin-right: auto;
         margin-left: auto;
+        margin-bottom: 32px;
 
     }
 
