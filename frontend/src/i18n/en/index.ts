@@ -3,7 +3,7 @@ import type { BaseTranslation } from '../i18n-types'
 const en = {
 	// TODO: your translations go here		
 	title: 'Distance Calculator',
-	calcDescription: 'Prototype wev application for calculating the distance between addresses.',
+	calcDescription: 'Prototype web application for calculating the distance between addresses.',
 	source: 'Source Address',
 	destination: 'Destination Address',
 	unit: 'Unit',
