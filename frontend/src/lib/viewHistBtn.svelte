@@ -1,10 +1,18 @@
 <script>
     import {LL} from "../i18n/i18n-svelte"
     import viewedImg from '$lib/images/viewed_img.png';
+    import { goto } from '$app/navigation';
+    
+    /**** functions and API calls *****/
+    function goToHistorical (){
+        goto('/historical')
+    }
+
 </script>
 
-<button>{$LL.viewHist()} <img src={viewedImg} alt="recentlyViewedImg" /></button>
-
+<div>
+    <button on:click={goToHistorical}>{$LL.viewHist()} <img src={viewedImg} alt="recentlyViewedImg" /></button>
+</div>
 
 <style>
     button{
