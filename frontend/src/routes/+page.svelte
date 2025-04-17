@@ -23,12 +23,14 @@ let radioTypes:string = [$LL.miles(), $LL.kilo(), $LL.both()];
 let radioChoice : '';
 let somethingWrong = false;
 
-//  check if all fields are filled
+
+//  used check if all fields are filled passes updated state values
 $: allFilled = address1 && address2 && radioChoice;
 $: addError= address1Error || address2Error
 $: wrong = somethingWrong
 
 
+//funtion to close the Calculation failed box
 const close =() =>{
     somethingWrong = false;
 }

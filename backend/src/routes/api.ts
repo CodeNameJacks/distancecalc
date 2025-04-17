@@ -31,7 +31,12 @@ router.use(apiLimiter);
 
 /******* FUNCTIONS ********/
 
-//save the distance query to the database
+/*save the distance query to the database
+* @params address1
+* @params address2
+* @params distArr
+* returns Success or Failed
+*/
 const saveDistance  = async (address1, address2, distArr) => {
     try {
         const db = await connectToDatabase();
@@ -54,7 +59,10 @@ const saveDistance  = async (address1, address2, distArr) => {
     }   
 }
 
-//get Geocode address from Nominatim API
+/*get Geocode address from Nominatim API
+* @params address
+* retruns an object of coordinates
+*/
 const getGeocode = async (address) => {
     const geoUrl = `https://nominatim.openstreetmap.org/search`;
     try{
@@ -83,7 +91,12 @@ const getGeocode = async (address) => {
 }
   
 
-//compute distance usng Haversine Distance formula
+/*compute distance usng Haversine Distance formula
+* @params coord1 and coord2
+* @params type
+* @params address 1 adn address2
+* returns and array (distArr)
+*/
 const calculateDistance = (coord1, coord2, type, address1, address2) => {
     let saveSuccess;
     try{
