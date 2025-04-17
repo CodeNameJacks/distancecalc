@@ -38,15 +38,18 @@
             let response = await axios.get(VITE_BASE_URL + '/historical');
             // @ts-ignore
             let histData = response.data;
-
+            console.log(histData);
             for( let i=0; i< histData.length; i++){
                  Object.entries(histData[i]).forEach(([key, value]) => {
                     if(`${key}` != "_id"){
-
-                     data.push(`${value}`);
-                    }        
-            });
-        }
+                        if(`${value}`==0){
+                            data.push(' ');
+                        } else{
+                        data.push(`${value}`);
+                        }
+                    } 
+                });
+            }
            
         let numOfRows = 4;
 
