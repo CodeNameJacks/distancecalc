@@ -1,12 +1,14 @@
 import {connectToDatabase} from './db/database'
+import logger from './logger/logger';
+import morganMiddleware from './middleware/morganMiddleware';
 require("dotenv").config();
 
 const express = require('express');
 const cors = require('cors');
 const port = process.env.PORT || 3000;
 const apiRoutes = require('./routes/api');
-const morganMiddleware = require('./morganMiddleware');
-const logger = require('./logger');
+
+
 
 
 //instance of express using cors

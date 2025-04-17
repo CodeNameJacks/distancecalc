@@ -1,13 +1,16 @@
 import axios from "axios";
 import express from 'express'
+import logger from '../logger/logger';
 import { Router, Request, Response } from 'express';
 import {connectToDatabase} from '../db/database'
+import morganMiddleware from '../middleware/morganMiddleware'; 
 require("dotenv").config();
-const logger = require('./logger');
+
 
 const router = Router();
 const cors = require('cors');
 const app = express();
+router.use(morganMiddleware);
 app.use(express.json());
 
 
@@ -158,10 +161,16 @@ router.get('/calculateDistance', async (req, res) => {
 
         const coord1 = JSON.stringify(getCoord1);
         const coord2 = JSON.stringify(getCoord2);
-
-        const distance = calculateDistance(coord1, coord2, unit, address1, address2);
         
-        res.json({ distance: distance});
+        if(coord1.includes("Error")||(coord2.includes("Error"))){
+            logger.info('Error: Address could not be found for ' + address1 +' or ' + address2 );
+            console.log('Error: Address could not be found for ' + address1 +' or ' + address2 );
+            res.send('400');
+        }
+        else{
+            const distance = calculateDistance(coord1, coord2, unit, address1, address2);
+            res.json({ distance: distance});
+        }
     } 
     catch (err) {
         logger.info('Something went wrong in calculate distance API. Error: ' + err);
