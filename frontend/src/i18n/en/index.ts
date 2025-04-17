@@ -18,6 +18,8 @@ const en = {
 	distMiles: 'Distance in Miles',
 	distKilo: 'Distance in Kilometers',
 	backToCalc: 'Back to Calculator',
+	wrongMessage:'Something went wrong and the calculation failed.',
+	calculationFailed: 'Calculation Failed',
 } satisfies BaseTranslation
 
 
