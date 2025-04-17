@@ -5,12 +5,16 @@ const express = require('express');
 const cors = require('cors');
 const port = process.env.PORT || 3000;
 const apiRoutes = require('./routes/api');
+const morganMiddleware = require('./morganMiddleware');
+const logger = require('./logger');
 
 
 //instance of express using cors
 const app = express();
 app.use(cors())
 app.use(express.json());
+//Use morgan middleware
+app.use(morganMiddleware);
 app.use('/api', apiRoutes); // mount API routes at /api
 
 
@@ -19,6 +23,7 @@ function startApp() {
 let connect = connectToDatabase();
    if(connect){
       app.listen(port, () => {
+        logger.info(`Server started on http://localhost:${port}`);
         return console.log(`Express is listening at http://localhost:${port}`);
       });
     }else{

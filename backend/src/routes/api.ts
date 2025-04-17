@@ -3,6 +3,7 @@ import express from 'express'
 import { Router, Request, Response } from 'express';
 import {connectToDatabase} from '../db/database'
 require("dotenv").config();
+const logger = require('./logger');
 
 const router = Router();
 const cors = require('cors');
@@ -13,14 +14,14 @@ app.use(express.json());
 /***** Rate Limiting *****/
 const rateLimit = require('express-rate-limit');
 
-// Rate limiter middleware
+// Rate limiter 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 50,
   message: 'Too many requests from this IP, try again later.',
 });
 
-// Apply to all routes in this router
+// Apply the rate limiter to all routes on this router
 router.use(apiLimiter);
 
 
@@ -38,11 +39,13 @@ const saveDistance  = async (address1, address2, distArr) => {
         if(result.acknowledged){
             return "Success"
         } else{ 
+            logger.info('Database save attempt failed');
             console.log('Database save attempt failed');
             return "Failed"
         }
     } 
     catch (err) {
+        logger.info('Try/catch triggered. Something when wrong saving to database. Error:' + err);
         console.log('Try/catch triggered. Something when wrong saving to database:', err);
         return ('Failed');
     }   
@@ -66,12 +69,13 @@ const getGeocode = async (address) => {
     
         const lat:string = response.data[0].lat;
         const lon:string = response.data[0].lon;
-
+        console.log(lat);
         return { lat: parseFloat(lat), lon: parseFloat(lon) };
     }
     catch(err){
+        logger.info('Unable to get location geocode. ' +err);
         console.log("Try/catch triggered. Count not get geocode: error " +err );
-        return ('501 error. Unable to get location. ' +err);
+        return ('Unable to get location. ' +err);
     }
 }
   
@@ -129,13 +133,15 @@ const calculateDistance = (coord1, coord2, type, address1, address2) => {
         if(saveSuccess != 'Success'){
             return distArr; 
         }else{
+            logger.info('Distance could not be computed for '+address1 + ' and ' + address2);
             console.log("Distance could not be computed");
-            return("Failed: Not anble to compete distance");
+            return("Failed: Not able to compete distance");
         }
     }
     catch(err){
+        logger.info('Not able to compute distance for for ' + address1 + ' and ' + address2 + 'Error: ' + err);
         console.log('Try/catch triggerd. Not able to compute distance. Error ' +err);
-        return ('501 error. Not able to compute distance. ' + err) ;
+        return (' Not able to compute distance. ' + err) ;
     }
 }
  
@@ -158,8 +164,9 @@ router.get('/calculateDistance', async (req, res) => {
         res.json({ distance: distance});
     } 
     catch (err) {
+        logger.info('Something went wrong in calculate distance API. Error: ' + err);
         console.log('Try/catch triggered in calculate distance API. Error: ' + err)
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ error: err });
     }
 });
   
@@ -175,8 +182,9 @@ router.get('/historical', async (req: Request, res: Response) => {
         res.json(data);   
     } 
     catch (err) {
+        logger.info('Problem fetching historical data. Error: ' + err);
         console.log('Try/catch triggered in get hotorical data. Error: ', err);
-        res.status(500).json({err: 'Error 500. Problem fetching historical data.' });
+        res.status(500).json({ error: err });
     }   
 });
   
