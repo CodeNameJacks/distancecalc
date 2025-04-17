@@ -8,8 +8,6 @@ import calcImg from '$lib/images/calculator_img_wh.png'
 import failedImg from '$lib/images/failed.png';
 import closeImg from '$lib/images/close_x.png';
 import axios from 'axios'
-    import { setContext } from 'svelte';
-
 
  
 const{VITE_BASE_URL} = import.meta.env
@@ -29,8 +27,6 @@ let somethingWrong = false;
 $: allFilled = address1 && address2 && radioChoice;
 $: addError= address1Error || address2Error
 $: wrong = somethingWrong
-
-
 
 
 const close =() =>{
@@ -53,18 +49,15 @@ const calculateDistance = async() => {
             address2: address2,
             unit: radioChoice    
         };
-
         let response = await axios.get(VITE_BASE_URL + '/calculateDistance?', {params});
         let results = response.data.distance; 
         
         distance1 = results[0];
-        distance2 = results[1]; 
-        
+        distance2 = results[1];     
     }
     catch(err){
         somethingWrong = true;
         console.log("Try/catch triggered. Something went wrong in calculateDistance. Error: " + err);
-
     }
 return   
 }
