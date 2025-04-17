@@ -14,7 +14,7 @@ Now run `npm install` to ensure that all the dependencies have installed.
 
 Now cd into the `backend` folder. Similarly, copy the back end .env file into the root folder. Rename it to .env and then run `npm install`.  
 
-To run the project locally, on the backend folder run `npx tsc`in the terminal. Then run `node dist/index.js` 
+To run the project locally, on the backend folder run `npx tsc` in the terminal. Then run `node dist/index.js` 
 You should see a message that the backend is running on `http://localhost:3000`.   Now go to the frontend folder and run `npm run dev`. 
 
 You should see a message the frontend is running on `http://localhost:5173`. Enter that the full `http://localhost:5173` address into the web 
